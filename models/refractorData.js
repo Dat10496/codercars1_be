@@ -8,7 +8,9 @@ const refractorData = async () => {
   let data = JSON.parse(fs.readFileSync("../db.json", "utf-8"));
 
   mongoose
-    .connect("mongodb://localhost:27017/coder_cars")
+    .connect(
+      "mongodb+srv://datvo:admin123@cluster0.wna3a.mongodb.net/?retryWrites=true&w=majority"
+    )
     .then(() => console.log("Connected success!"))
     .catch((err) => console.log(err, "error connect"));
 
