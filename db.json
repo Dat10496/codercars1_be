@@ -1,0 +1,92 @@
+[
+    {
+        "make": "BMW",
+        "model": "1 Series M",
+        "price": 46135,
+        "release_date": 2011,
+        "size": "Compact",
+        "style": "Coupe",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 40650,
+        "release_date": 2011,
+        "size": "Compact",
+        "style": "Convertible",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 36350,
+        "release_date": 2011,
+        "size": "Compact",
+        "style": "Coupe",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 29450,
+        "release_date": 2011,
+        "size": "Compact",
+        "style": "Coupe",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 34500,
+        "release_date": 2011,
+        "size": "Compact",
+        "style": "Convertible",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 31200,
+        "release_date": 2012,
+        "size": "Compact",
+        "style": "Coupe",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 44100,
+        "release_date": 2012,
+        "size": "Compact",
+        "style": "Convertible",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 39300,
+        "release_date": 2012,
+        "size": "Compact",
+        "style": "Coupe",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 36900,
+        "release_date": 2012,
+        "size": "Compact",
+        "style": "Convertible",
+        "transmission_type": "MANUAL"
+    },
+    {
+        "make": "BMW",
+        "model": "1 Series",
+        "price": 37200,
+        "release_date": 2013,
+        "size": "Compact",
+        "style": "Convertible",
+        "transmission_type": "MANUAL"
+    }
+]
