@@ -2,6 +2,8 @@
 
 This is Back-End api of many types of cars
 
+Rename `.env.example` to `.env`
+
 `npm install` and `npm start` to run project
 
 # method CREATE
