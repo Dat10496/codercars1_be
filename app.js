@@ -21,7 +21,9 @@ const mongoose = require("mongoose");
 const mongoUri = process.env.MONGO_URI;
 
 mongoose
-  .connect(mongoUri)
+  .connect(
+    "mongodb+srv://datvo:admin123@cluster0.wna3a.mongodb.net/?retryWrites=true&w=majority"
+  )
   .then(() => console.log("Connected success!"))
   .catch((err) => console.log(err, "ERROR"));
 
