@@ -24,21 +24,24 @@ carController.createCar = async (req, res, next) => {
 
 carController.getCars = async (req, res, next) => {
   try {
-    const filter = {};
+    const filter = { isDeleted: { $eq: false } };
 
     let { page } = req.query;
 
     page = parseInt(page) || 1;
+
     const limit = 10;
 
     let offset = limit * (page - 1);
 
-    const listOfCar = await Car.find({});
+    const listOfCar = await Car.find({})
+    .sort({ createdAt: -1 });
+
     let result = [];
     result = listOfCar;
+    result = result.slice(offset, offset + limit);
 
     let total = listOfCar.length;
-    result = result.slice(offset, offset + limit);
 
     res.status(200).send({
       cars: result,
@@ -79,10 +82,19 @@ carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
   const targetId = id;
   const options = { new: true };
-  try {
-    const deleted = Car.findByIdAndDelete(targetId, options);
 
-    res.status(200).send({ message: "Delete car successfully", car: deleted });
+  try {
+    const deletedCar = await Car.findByIdAndUpdate(
+      targetId,
+      {
+        isDeleted: true,
+      },
+      options
+    );
+
+    res
+      .status(200)
+      .send({ cars: deletedCar, message: "Delete car successfully" });
   } catch (err) {
     next(err);
   }
