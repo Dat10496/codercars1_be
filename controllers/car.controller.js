@@ -14,6 +14,7 @@ carController.createCar = async (req, res, next) => {
     release_date,
     price,
   };
+  if (!info) throw new Error("field required");
   try {
     const created = await Car.create(info);
     res.status(200).send({ message: "Create Car Successfully!", car: created });
@@ -34,8 +35,7 @@ carController.getCars = async (req, res, next) => {
 
     let offset = limit * (page - 1);
 
-    const listOfCar = await Car.find({})
-    .sort({ createdAt: -1 });
+    const listOfCar = await Car.find({}).sort({ createdAt: -1 });
 
     let result = [];
     result = listOfCar;
@@ -70,6 +70,8 @@ carController.editCar = async (req, res, next) => {
   const targetId = id;
   const options = { new: true };
 
+  if (!Object.keys(updateInfo)) throw new Error("field is invalid");
+
   try {
     const updated = await Car.findByIdAndUpdate(targetId, updateInfo, options);
     res.status(200).send({ message: "Edit car successfully", car: updated });
@@ -91,6 +93,9 @@ carController.deleteCar = async (req, res, next) => {
       },
       options
     );
+    if (!deletedCar) throw new Error("Car is not exist");
+
+    deletedCar = await deletedCar.save();
 
     res
       .status(200)
