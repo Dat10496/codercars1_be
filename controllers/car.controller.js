@@ -25,7 +25,7 @@ carController.createCar = async (req, res, next) => {
 
 carController.getCars = async (req, res, next) => {
   try {
-    const filter = { isDeleted: { $eq: false } };
+    const filter = { isDeleted: false };
 
     let { page } = req.query;
 
@@ -35,7 +35,7 @@ carController.getCars = async (req, res, next) => {
 
     let offset = limit * (page - 1);
 
-    const listOfCar = await Car.find({}).sort({ createdAt: -1 });
+    const listOfCar = await Car.find(filter).sort({ createdAt: -1 });
 
     let result = [];
     result = listOfCar;
@@ -67,13 +67,20 @@ carController.editCar = async (req, res, next) => {
     release_date,
     price,
   };
-  const targetId = id;
+
   const options = { new: true };
 
   if (!Object.keys(updateInfo)) throw new Error("field is invalid");
 
   try {
-    const updated = await Car.findByIdAndUpdate(targetId, updateInfo, options);
+    const car = await Car.findById(id, { isDeleted: false });
+
+    if (!car) throw new Error("Car is not exist");
+
+    const updated = await Car.findByIdAndUpdate(id, updateInfo, options);
+
+    if (!updated) throw new Error("Car is not exist");
+
     res.status(200).send({ message: "Edit car successfully", car: updated });
   } catch (err) {
     next(err);
@@ -82,20 +89,12 @@ carController.editCar = async (req, res, next) => {
 
 carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
-  const targetId = id;
+  const deleteCar = { isDeleted: true };
   const options = { new: true };
 
   try {
-    const deletedCar = await Car.findByIdAndUpdate(
-      targetId,
-      {
-        isDeleted: true,
-      },
-      options
-    );
+    const deletedCar = await Car.findByIdAndUpdate(id, deleteCar, options);
     if (!deletedCar) throw new Error("Car is not exist");
-
-    deletedCar = await deletedCar.save();
 
     res
       .status(200)

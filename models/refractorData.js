@@ -1,4 +1,4 @@
-const express = require("express");
+require("dotenv").config();
 const csv = require("csvtojson");
 const fs = require("fs");
 const Car = require("./Car");
@@ -8,9 +8,7 @@ const refractorData = async () => {
   let data = JSON.parse(fs.readFileSync("../db.json", "utf-8"));
 
   mongoose
-    .connect(
-      "mongodb+srv://datvo:admin123@cluster0.wna3a.mongodb.net/?retryWrites=true&w=majority"
-    )
+    .connect("mongodb+srv://datdat:datdat123@cluster0.wna3a.mongodb.net/")
     .then(() => console.log("Connected success!"))
     .catch((err) => console.log(err, "error connect"));
 
@@ -32,7 +30,7 @@ const refractorData = async () => {
   data = newData;
   fs.writeFileSync("../db.json", JSON.stringify(data));
   // create document in dtb
-  await Car.create(newData);
+  await Car.create(newData).then(() => console.log("seed data success"));
 };
 
 refractorData().catch((err) => console.log(err, "refract err"));

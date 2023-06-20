@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -21,11 +22,9 @@ const mongoose = require("mongoose");
 const mongoUri = process.env.MONGO_URI;
 
 mongoose
-  .connect(
-    "mongodb+srv://datvo:admin123@cluster0.wna3a.mongodb.net/?retryWrites=true&w=majority"
-  )
-  .then(() => console.log("Connected success!"))
-  .catch((err) => console.log(err, "ERROR"));
+  .connect(mongoUri)
+  .then(() => console.log(`Connected success ${mongoUri}!`))
+  .catch((err) => console.log(err, "CONNECT DB ERROR"));
 
 app.use("/", indexRouter);
 
