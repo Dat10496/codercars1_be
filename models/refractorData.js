@@ -1,11 +1,8 @@
-require("dotenv").config();
 const csv = require("csvtojson");
 const fs = require("fs");
 const Car = require("./Car");
 const mongoose = require("mongoose");
 
-const mongoUri = process.env.MONGO_URI;
-console.log(mongoUri);
 const refractorData = async () => {
   let data = JSON.parse(fs.readFileSync("../db.json", "utf-8"));
 
