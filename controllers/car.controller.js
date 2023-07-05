@@ -84,7 +84,7 @@ carController.editCar = async (req, res, next) => {
 
 carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
+
   const options = { new: true };
 
   try {
@@ -95,8 +95,6 @@ carController.deleteCar = async (req, res, next) => {
       },
       options
     );
-
-    console.log(deletedCar);
 
     res
       .status(200)

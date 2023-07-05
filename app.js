@@ -32,10 +32,10 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// app.use((err, res, req, next) => {
-//   console.log("ERROR", err);
-//   err.statusCode = 404;
-//   res.status(err.statusCode ? err.statusCode : 500).send(err.message);
-// });
+app.use((err, res, req, next) => {
+  console.log("ERROR", err);
+  err.statusCode = 404;
+  res.status(err.statusCode ? err.statusCode : 500).send(err.message);
+});
 
 module.exports = app;
