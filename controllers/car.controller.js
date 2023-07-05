@@ -35,13 +35,15 @@ carController.getCars = async (req, res, next) => {
 
     let offset = limit * (page - 1);
 
-    const listOfCar = await Car.find({}).sort({ createdAt: -1 });
+    const listOfCar = await Car.find(filter).sort({ createdAt: -1 });
 
     let result = [];
     result = listOfCar;
     result = result.slice(offset, offset + limit);
 
-    let total = listOfCar.length;
+    let total = await Car.countDocuments(filter);
+
+    total = parseInt(total / limit);
 
     res.status(200).send({
       cars: result,
@@ -82,20 +84,19 @@ carController.editCar = async (req, res, next) => {
 
 carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
-  const targetId = id;
+  console.log(id);
   const options = { new: true };
 
   try {
     const deletedCar = await Car.findByIdAndUpdate(
-      targetId,
+      id,
       {
         isDeleted: true,
       },
       options
     );
-    if (!deletedCar) throw new Error("Car is not exist");
 
-    deletedCar = await deletedCar.save();
+    console.log(deletedCar);
 
     res
       .status(200)
