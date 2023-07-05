@@ -30,6 +30,8 @@ const refractorData = async () => {
   fs.writeFileSync("../db.json", JSON.stringify(data));
   // create document in dtb
   await Car.create(newData);
+
+  console.log("done");
 };
 
 refractorData().catch((err) => console.log(err, "refract err"));

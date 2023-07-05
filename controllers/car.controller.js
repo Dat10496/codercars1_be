@@ -14,7 +14,9 @@ carController.createCar = async (req, res, next) => {
     release_date,
     price,
   };
+
   if (!info) throw new Error("field required");
+
   try {
     const created = await Car.create(info);
     res.status(200).send({ message: "Create Car Successfully!", car: created });
@@ -25,31 +27,21 @@ carController.createCar = async (req, res, next) => {
 
 carController.getCars = async (req, res, next) => {
   try {
-    const filter = { isDeleted: { $eq: false } };
-
-    let { page } = req.query;
-
-    page = parseInt(page) || 1;
-
+    const filter = { isDeleted: false };
+    const { page = 1 } = req.query;
     const limit = 10;
-
-    let offset = limit * (page - 1);
+    const offset = limit * (page - 1);
 
     const listOfCar = await Car.find(filter).sort({ createdAt: -1 });
+    const result = listOfCar.slice(offset, offset + limit);
 
-    let result = [];
-    result = listOfCar;
-    result = result.slice(offset, offset + limit);
-
-    let total = await Car.countDocuments(filter);
-
-    total = parseInt(total / limit);
+    const total = parseInt((await Car.countDocuments(filter)) / limit);
 
     res.status(200).send({
       cars: result,
       message: "Get Car List Successfully!",
-      page: page,
-      total: total,
+      page,
+      total,
     });
   } catch (error) {
     next(error);
@@ -84,7 +76,6 @@ carController.editCar = async (req, res, next) => {
 
 carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
-
   const options = { new: true };
 
   try {
