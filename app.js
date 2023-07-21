@@ -23,19 +23,21 @@ const mongoUri = process.env.MONGO_URI;
 mongoose
   .connect(mongoUri)
   .then(() => console.log(`Connected success ${mongoUri}!`))
-  .catch((err) => console.log(err, "ERROR"));
+  .catch((err) => console.log(err, "Connect DB ERROR"));
 
 app.use("/", indexRouter);
 
 app.use((req, res, next) => {
-  const err = new Error("404 server not found");
-  next(err);
+  const exception = new Error(`Path not found`);
+  exception.statusCode = 404;
+  next(exception);
 });
 
-app.use((err, res, req, next) => {
-  console.log("ERROR", err);
-  err.statusCode = 404;
-  res.status(err.statusCode ? err.statusCode : 500).send(err.message);
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.statusCode || 500).send(err.message);
 });
+
+
 
 module.exports = app;

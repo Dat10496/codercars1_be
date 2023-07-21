@@ -32,13 +32,18 @@ carController.getCars = async (req, res, next) => {
     const limit = 10;
     const offset = limit * (page - 1);
 
-    const listOfCar = await Car.find(filter).sort({ createdAt: -1 });
-    const result = listOfCar.slice(offset, offset + limit);
+    const listOfCar = await Car.find(filter)
+      .sort({
+        createdAt: -1,
+        updatedAt: -1,
+      })
+      .skip(offset)
+      .limit(limit);
 
     const total = parseInt((await Car.countDocuments(filter)) / limit);
 
     res.status(200).send({
-      cars: result,
+      cars: listOfCar,
       message: "Get Car List Successfully!",
       page,
       total,
@@ -67,7 +72,11 @@ carController.editCar = async (req, res, next) => {
   if (!Object.keys(updateInfo)) throw new Error("field is invalid");
 
   try {
-    const updated = await Car.findByIdAndUpdate(targetId, updateInfo, options);
+    const updated = await Car.findByIdAndUpdate(
+      targetId,
+      { $set: updateInfo },
+      options
+    );
     res.status(200).send({ message: "Edit car successfully", car: updated });
   } catch (err) {
     next(err);
@@ -82,7 +91,7 @@ carController.deleteCar = async (req, res, next) => {
     const deletedCar = await Car.findByIdAndUpdate(
       id,
       {
-        isDeleted: true,
+        $set: { isDeleted: true },
       },
       options
     );

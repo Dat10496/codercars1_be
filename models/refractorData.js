@@ -27,7 +27,7 @@ const refractorData = async () => {
   });
 
   data = newData;
-  fs.writeFileSync("../db.json", JSON.stringify(data));
+
   // create document in dtb
   await Car.create(newData);
 
