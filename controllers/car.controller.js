@@ -25,31 +25,26 @@ carController.createCar = async (req, res, next) => {
 
 carController.getCars = async (req, res, next) => {
   try {
-    const filter = { isDeleted: { $eq: false } };
-
-    let { page } = req.query;
-
-    page = parseInt(page) || 1;
-
+    const filter = { isDeleted: false };
+    const { page = 1 } = req.query;
     const limit = 10;
+    const offset = limit * (page - 1);
 
-    let offset = limit * (page - 1);
+    const listOfCar = await Car.find(filter)
+      .sort({
+        createdAt: -1,
+        updatedAt: -1,
+      })
+      .skip(offset)
+      .limit(limit);
 
-    const listOfCar = await Car.find(filter).sort({ createdAt: -1 });
-
-    let result = [];
-    result = listOfCar;
-    result = result.slice(offset, offset + limit);
-
-    let total = await Car.countDocuments(filter);
-
-    total = parseInt(total / limit);
+    const total = parseInt((await Car.countDocuments(filter)) / limit);
 
     res.status(200).send({
-      cars: result,
+      cars: listOfCar,
       message: "Get Car List Successfully!",
-      page: page,
-      total: total,
+      page,
+      total,
     });
   } catch (error) {
     next(error);
@@ -69,13 +64,20 @@ carController.editCar = async (req, res, next) => {
     release_date,
     price,
   };
-  const targetId = id;
+
   const options = { new: true };
 
   if (!Object.keys(updateInfo)) throw new Error("field is invalid");
 
   try {
-    const updated = await Car.findByIdAndUpdate(targetId, updateInfo, options);
+    const car = await Car.findById(id, { isDeleted: false });
+
+    if (!car) throw new Error("Car is not exist");
+
+    const updated = await Car.findByIdAndUpdate(id, updateInfo, options);
+
+    if (!updated) throw new Error("Car is not exist");
+
     res.status(200).send({ message: "Edit car successfully", car: updated });
   } catch (err) {
     next(err);
@@ -84,7 +86,7 @@ carController.editCar = async (req, res, next) => {
 
 carController.deleteCar = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
+ 
   const options = { new: true };
 
   try {
@@ -96,7 +98,7 @@ carController.deleteCar = async (req, res, next) => {
       options
     );
 
-    console.log(deletedCar);
+  
 
     res
       .status(200)
